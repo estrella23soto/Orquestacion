@@ -1,0 +1,34 @@
+
+services:
+  backend:
+    build:
+      context: ./BackendTaskcute  # Directorio raíz del Dockerfile del backend
+    container_name: backend
+    ports:
+      - 4000:4000  # Mapea el puerto externo 4000 al interno 4000
+    deploy:
+      resources:
+        limits:
+          cpus: '0.35'  # Limitar el uso de CPU al 35%
+          memory: 350M  # Limitar el uso de memoria a 350MB
+        reservations:
+          cpus: '0.20'  # Recurso dedicado de CPU al 20%
+          memory: 250M  # Recurso dedicado de memoria a 250MB
+
+  # Frontend service
+  task-front:
+    build:
+      context: ./Front-end 
+    container_name: tasck-front
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+    deploy:
+      resources:
+        limits:
+          cpus: "0.30"
+          memory: 300M
+        reservations:
+          cpus: "0.15"
+          memory: 200M
